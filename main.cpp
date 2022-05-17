@@ -1,54 +1,25 @@
 #include <iostream>
+#include <string>
 
-class Area{
-public:
-    virtual double area() = 0;
-};
+using String = std::string;
 
-struct Triangle : public Area{
+class Entity{
+private:
+    String m_Name;
 public:
-    int m_width = 5;
-    int m_height = 4;
-public:
-    double area() override {
-        double area = 0.5 * m_width * m_height;
-        return area;
-    }
-};
+    Entity() : m_Name("Unknown") {}
+    Entity(const String& name) : m_Name(name) {}
 
-struct Rectangle : public Area{
-public:
-    int m_width = 8;
-    int m_height = 2;
-public:
-    double area() override {
-        double area = m_width * m_height;
-        return area;
-    }
-};
-
-struct Circle : public Area {
-public:
-    int m_radius = 68;
-public:
-    double area() override {
-        double area = 3.14 * pow(m_radius, 2);
-        return area;
-    }
+    const String& GetName() const { return m_Name; }
 };
 
 int main(){
-    Triangle triangle;
-    Area &t_area = triangle;
-    std::cout << "Area of triangle is a " << t_area.area() << std::endl;
-
-    Rectangle rectangle;
-    Area &r_area = rectangle;
-    std::cout << "Area of rectangle is a " << r_area.area() << std::endl;
-
-    Circle circle;
-    Area &c_area = circle;
-    std::cout << "Area of circle is a " << c_area.area() << std::endl;
-
+    Entity* e;{
+        //create Entity on a HEAP;
+        Entity* entity = new Entity("Uga-Buga");
+        e = entity;
+        std::cout << entity->GetName() << std::endl;
+    }
+    delete e;
     std::cin.get();
 }
