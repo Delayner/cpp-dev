@@ -14,12 +14,14 @@ public:
 };
 
 int main(){
-    Entity* e;{
-        //create Entity on a HEAP;
-        Entity* entity = new Entity("Uga-Buga");
-        e = entity;
-        std::cout << entity->GetName() << std::endl;
-    }
-    delete e;
+   int a = 2;
+   int* b = new int[50];
+
+   Entity* e = new Entity();//call the Entity constructor
+   //Entity* e = (Entity*)malloc(sizeof(Entity)); - allocate the memory and give me a pointer to that memory, NOT calling the constructor
+
+   delete e;
+   delete[] b;
+
     std::cin.get();
 }
