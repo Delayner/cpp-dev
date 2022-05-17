@@ -1,91 +1,54 @@
 #include <iostream>
 
+class Area{
+public:
+    virtual double area() = 0;
+};
 
-
-class Queue {
-    static const int SIZE=100;
-    int *queue;
-    int frnt, rear;
-public :
-    Queue () ;
-    void push ( int num ) ;
-    void out();
-    int size();
-    void pop();
-    int front();
-    int back();
-} ;
-//Конструктор
-Queue::Queue() {
-    queue = new int[SIZE];
-    frnt = rear = 0 ;
-}
-//Вывод элементов очереди
-void Queue::out() {
-    for(int i=frnt+1;i<rear+1;i++)
-        std::cout<<" "<<queue[i];
-}
-//Помещение элемента в очередь
-void Queue::push ( int num ) {
-    if ( rear+1 == frnt || ( rear + 1 ==SIZE && !frnt )) {
-        std::cout << "Queue is full" <<std::endl ;
-        return ;
+struct Triangle : public Area{
+public:
+    int m_width = 5;
+    int m_height = 4;
+public:
+    double area() override {
+        double area = 0.5 * m_width * m_height;
+        return area;
     }
-    rear++;
-    if ( rear==SIZE ) rear = 0 ;
-    queue [ rear ] = num;
-}
-// Извлечение элемента из очереди
-void Queue::pop() {
-    if ( frnt == rear ) {
-        std::cout << "Queue is empty" <<std::endl ;
-        return;
+};
+
+struct Rectangle : public Area{
+public:
+    int m_width = 8;
+    int m_height = 2;
+public:
+    double area() override {
+        double area = m_width * m_height;
+        return area;
     }
-    frnt++;
-    if ( frnt==SIZE ) frnt = 0 ;}
-//Определение размера очереди
-int Queue::size() {
-    int s=0;
-    for(int i=frnt; i<rear; i++)
-        s++;
-    return s;
-}
-// Последний элемент очереди
-int Queue::back() {
-    return queue[rear]; }
-// Первый элемент очереди
-int Queue::front() {
-    return queue[frnt+1]; }
+};
 
+struct Circle : public Area {
+public:
+    int m_radius = 68;
+public:
+    double area() override {
+        double area = 3.14 * pow(m_radius, 2);
+        return area;
+    }
+};
 
-int main() {
-    Queue queue1;
-    int i;
+int main(){
+    Triangle triangle;
+    Area &t_area = triangle;
+    std::cout << "Area of triangle is a " << t_area.area() << std::endl;
 
-    for (i= 1 ; i <= 5 ; i++ )
-        queue1.push ( i ) ;
-    std::cout<<"Starting queue ";
-    queue1.out();
-    std::cout<<std::endl;
-    std::cout<<"Enter one more element: ";
-    std::cin>>i;
-    queue1.push(i);
-    std::cout<<"Now queue is: "<<std::endl;
-    queue1.out();
-    std::cout<<std::endl<<"Size of queue:"<<std::endl;
-    std::cout<<queue1.size();
-    std::cout<<std::endl <<"Last element:"<< std::endl;
-    std::cout<<queue1.back();
-    std::cout<<std::endl<<"First element: "<<std::endl;
-    std::cout<<queue1.front();
-    std::cout<<std::endl <<"Deleting first element: ";
-    queue1.pop();
-    std::cout<<std::endl <<"Current data: ";
-    queue1.out();
-    std::cout<<std::endl <<"Another addition of an element: ";
-    queue1.push(i + 1);
-    queue1.out();
-    std::cout<<std::endl;
+    Rectangle rectangle;
+    Area &r_area = rectangle;
+    std::cout << "Area of rectangle is a " << r_area.area() << std::endl;
+
+    Circle circle;
+    Area &c_area = circle;
+    std::cout << "Area of circle is a " << c_area.area() << std::endl;
+
     std::cin.get();
-    return 0;
 }
