@@ -1,27 +1,48 @@
+
 #include <iostream>
 #include <string>
 
-using String = std::string;
+struct Vector2{
+float x, y;
 
-class Entity{
-private:
-    String m_Name;
-public:
-    Entity() : m_Name("Unknown") {}
-    Entity(const String& name) : m_Name(name) {}
+    Vector2(float x, float y)
+        : x(x), y(y) {}
 
-    const String& GetName() const { return m_Name; }
+        Vector2 Add(const Vector2& other) const
+        {
+            return Vector2(x + other.x, y + other.y);
+        }
+
+        Vector2 operator+(const Vector2& other) const
+        {
+            return Add(other);
+        }
+
+        Vector2 Multiply(const Vector2& other) const
+        {
+            return Vector2(x * other.x, y * other.y);
+        }
+
+        Vector2 operator*(const Vector2& other) const
+        {
+            return Multiply(other);
+        }
 };
 
+std::ostream& operator<<(std::ostream& stream, const Vector2& other) {
+    stream << other.x << ", " << other.y;
+    return stream;
+}
+
 int main(){
-   int a = 2;
-   int* b = new int[50];
+    Vector2 position(4.0f, 4.0f);
+    Vector2 speed(0.5f, 1.5f);
+    Vector2 powerup(1.1f, 1.1f);
 
-   Entity* e = new Entity();//call the Entity constructor
-   //Entity* e = (Entity*)malloc(sizeof(Entity)); - allocate the memory and give me a pointer to that memory, NOT calling the constructor
+    Vector2 result1 = position.Add(speed.Multiply(powerup));
+    Vector2 result2 = position + speed * powerup;
 
-   delete e;
-   delete[] b;
+    std::cout << result2 <<std::endl;
 
     std::cin.get();
 }
