@@ -2,37 +2,59 @@
 #include <iostream>
 #include <string>
 
-class Entity{
-public:
-    Entity(){
-        std::cout << "Create entity!" << std::endl;
-    }
-
-    ~Entity(){
-        std::cout << "Delete entity!" << std::endl;
-    }
-};
-
-class ScopedPtr{
+class String{
 private:
-    Entity* m_Ptr;
+    char* m_Buffer;
+    unsigned int m_Size;
 public:
-    ScopedPtr(Entity* ptr)
-        : m_Ptr(ptr)
+    String(const char* string)
     {
+        m_Size = strlen(string);
+        m_Buffer = new char[m_Size + 1];
+        memcpy(m_Buffer, string, m_Size);
+        m_Buffer[m_Size] = 0;
     }
 
-    ~ScopedPtr()
+    String(const String& other)
+        : m_Size(other.m_Size)
     {
-        delete m_Ptr;
+        std::cout << "Copied String!" << std::endl;
+        m_Buffer = new char[m_Size + 1];
+        memcpy(m_Buffer, other.m_Buffer, m_Size + 1);
     }
+
+    ~String()
+    {
+        delete[] m_Buffer;
+    }
+
+    char& operator[](unsigned int index)
+    {
+        return m_Buffer[index];
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, const String& string);
 };
 
-int main(){
+std::ostream& operator<<(std::ostream& stream, const String& string)
+{
+    stream << string.m_Buffer;
+    return stream;
+}
 
-    {
-        ScopedPtr e = new Entity();//allocated on a stack
-        //Entity* en = new Entity(); - without delete automatically
-    }
+void PrintString(const String& string)
+{
+    std::cout << string << std::endl;
+}
+
+int main() {
+    String string = "Abunda LA Kaka";
+    String second = string;
+
+    second[2] = 'a';
+
+    PrintString(string);
+    PrintString(second);
+
     std::cin.get();
 }
