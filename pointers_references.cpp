@@ -1,16 +1,24 @@
 
 #include <iostream>
+#include <string>
 
-int main(){
-int a = 5;
-int b = 8;
-
-int *ref = &a;
-*ref = 1;
-ref = &b; // *ref = b;
-*ref = 3;
+class Entity
+{
+public:
+    void Print() const { std::cout << "Hello!" << std::endl; }
+};
 
 
-std::cout << a << " " << b << " " << *ref << std::endl;
+
+int main()
+{
+    Entity e;
+    e.Print();
+
+    Entity* ptr = &e;
+    // Entity& entity = *ptr;
+    // (*ptr).Print();
+    ptr->Print();
+
     std::cin.get();
 }
