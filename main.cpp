@@ -1,60 +1,31 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
-class String{
-private:
-    char* m_Buffer;
-    unsigned int m_Size;
-public:
-    String(const char* string)
-    {
-        m_Size = strlen(string);
-        m_Buffer = new char[m_Size + 1];
-        memcpy(m_Buffer, string, m_Size);
-        m_Buffer[m_Size] = 0;
-    }
-
-    String(const String& other)
-        : m_Size(other.m_Size)
-    {
-        std::cout << "Copied String!" << std::endl;
-        m_Buffer = new char[m_Size + 1];
-        memcpy(m_Buffer, other.m_Buffer, m_Size + 1);
-    }
-
-    ~String()
-    {
-        delete[] m_Buffer;
-    }
-
-    char& operator[](unsigned int index)
-    {
-        return m_Buffer[index];
-    }
-
-    friend std::ostream& operator<<(std::ostream& stream, const String& string);
+struct Vertex
+{
+    float x, y, z;
 };
 
-std::ostream& operator<<(std::ostream& stream, const String& string)
+std::ostream& operator<<(std::ostream& stream, const Vertex& vertex)
 {
-    stream << string.m_Buffer;
+    stream << vertex.x << ", " << vertex.y << ", " << vertex.z;
     return stream;
 }
 
-void PrintString(const String& string)
-{
-    std::cout << string << std::endl;
-}
-
 int main() {
-    String string = "Abunda LA Kaka";
-    String second = string;
+   std::vector<Vertex> vertices;
+    vertices.push_back({1, 2 ,3 });
+    vertices.push_back({4, 5, 6 });
 
-    second[2] = 'a';
+    for(int i = 0; i < vertices.size(); i++)
+        std::cout << vertices[i] << std::endl;
 
-    PrintString(string);
-    PrintString(second);
+       vertices.erase(vertices.begin() + 1);
+
+    for(Vertex& v : vertices) // with &, Vertex not copying the data
+        std::cout << v << std::endl;
 
     std::cin.get();
 }
