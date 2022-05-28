@@ -1,30 +1,80 @@
 
 #include <iostream>
-#include <string>
-#include <vector>
 
-struct Vertex
+class String
 {
-    float x, y, z;
-
-    Vertex(float x, float y, float z)
-        : x(x), y(y), z(z)
+public:
+    String() = default;
+    String(const char* string)
     {
+        printf("Created!\n");
+        m_Size = strlen(string);
+        m_Data = new char[m_Size];
+        memcpy(m_Data, string, m_Size);
     }
 
-    Vertex(const Vertex& vertex)
-            : x(vertex.x), y(vertex.y), z(vertex.z)
+    String(const String& other)
     {
-        std::cout << "Copied!" << std::endl;
+        printf("Copied!\n");
+        m_Size = other.m_Size;
+        m_Data = new char[m_Size];
+        memcpy(m_Data, other.m_Data, m_Size);
     }
+
+    String(String&& other) noexcept
+    {
+        printf("Moved!\n");
+        m_Size = other.m_Size;
+        m_Data = other.m_Data;
+        other.m_Size = 0;
+        other.m_Data = nullptr;
+    }
+
+    ~String()
+    {
+        printf("Destroyed!\n");
+        delete m_Data;
+    }
+
+    void Print()
+    {
+        for (uint32_t i = 0; i < m_Size; i++)
+            printf("%c", m_Data[i]);
+
+        printf("\n");
+    }
+
+private:
+    char* m_Data;
+    uint32_t m_Size;
 };
 
-int main() {
-    std::vector<Vertex> vertices;
-    vertices.reserve(3);
-    vertices.emplace_back(1, 2, 3 );
-    vertices.emplace_back(4, 5, 6 );
-    vertices.emplace_back(7, 8, 9 );
+class Entity
+{
+public:
+    Entity(const String& name)
+        : m_Name(name)
+    {
+    }
+
+    Entity(String&& name)
+        : m_Name(std::move(name))
+    {
+    }
+
+    void PrintName()
+    {
+        m_Name.Print();
+    }
+private:
+    String m_Name;
+
+};
+
+int main()
+{
+    Entity entity(String("I want a BANANA!"));
+    entity.PrintName();
 
     std::cin.get();
 }
