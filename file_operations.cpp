@@ -4,12 +4,12 @@
 
 int main()
 {
-    std::ofstream out;          // поток для записи
-    out.open("D:\\Work\\hello.txt"); // окрываем файл для записи
+    std::ofstream out("D:\\Work\\hello.txt", std::ios::app);
     if (out.is_open())
     {
-        out << "Hello World!" << std::endl;
+        out << "Welcome to CPP" << std::endl;
     }
+    out.close();
 
     std::cout << "End of program" << std::endl;
     std::cin.get();
