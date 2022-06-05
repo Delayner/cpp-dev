@@ -1,15 +1,21 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 int main()
 {
-    std::ofstream out("D:\\Work\\hello.txt", std::ios::app);
-    if (out.is_open())
+    std::string line;
+
+    std::ifstream in("D:\\Work\\hello.txt"); // окрываем файл для чтения
+    if (in.is_open())
     {
-        out << "Welcome to CPP" << std::endl;
+        while (getline(in, line))
+        {
+            std::cout << line << std::endl;
+        }
     }
-    out.close();
+    in.close();
 
     std::cout << "End of program" << std::endl;
     std::cin.get();
