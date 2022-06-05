@@ -1,22 +1,50 @@
-
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <vector>
 
+struct Operation
+{
+    int sum;        // купленная сумма
+    double rate;    // по какому курсу
+    Operation(double s, double r) : sum(s), rate(r)
+    {}
+};
 int main()
 {
-    std::string line;
+    std::vector<Operation> operations = {
+            Operation(120, 57.7),
+            Operation(1030, 57.4),
+            Operation(980, 58.5),
+            Operation(560, 57.2)
+    };
 
-    std::ifstream in("D:\\Work\\hello.txt"); // окрываем файл для чтения
+    std::ofstream out("D:\\Work\\operations.txt");
+
+    if (out.is_open())
+    {
+        for (int i = 0; i < operations.size(); i++)
+        {
+            out << operations[i].sum << " " << operations[i].rate << std::endl;
+        }
+    }
+    out.close();
+
+    std::vector<Operation> new_operations;
+    double rate;
+    int sum;
+    std::ifstream in("D:\\Work\\operations.txt"); // окрываем файл для чтения
     if (in.is_open())
     {
-        while (getline(in, line))
+        while (in >> sum >> rate)
         {
-            std::cout << line << std::endl;
+            new_operations.push_back(Operation(sum, rate));
         }
     }
     in.close();
 
-    std::cout << "End of program" << std::endl;
-    std::cin.get();
+    for (int i = 0; i < new_operations.size(); i++)
+    {
+        std::cout << new_operations[i].sum << " - " << new_operations[i].rate << std::endl;
+    }
+    return 0;
 }
